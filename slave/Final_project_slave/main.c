@@ -95,9 +95,12 @@ int main(void)
     UCA0CTLW0 |= UCSWRST;
 
     UCA0CTLW0 |= UCSSEL__SMCLK;
-    UCA0BRW = 26;                          // Divider for 38400 baud at 1 MHz
-    UCA0MCTLW = 0xB600;       // UCBRSx = 0x00, UCBRFx = 10, UCOS16 = 1
+    //UCA0BRW = 26;                          // Divider for 38400 baud at 1 MHz
+    //UCA0MCTLW = 0xB600;       // UCBRSx = 0x00, UCBRFx = 10, UCOS16 = 1
 
+
+    UCA0BRW = 104;                     // Divider
+    UCA0MCTLW = (0x2000 | UCOS16);     // UCBRS=0x20, UCBRF=0, UCOS16=1
 
     P1SEL1 &= ~BIT7;
     P1SEL0 |= BIT7;
