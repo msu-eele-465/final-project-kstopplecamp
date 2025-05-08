@@ -6,6 +6,8 @@
     int col_4 = 0;
     int col = 0;
 
+    int key = 20;
+
 
 /**
  * main.c
@@ -17,7 +19,7 @@ int main(void)
     PM5CTL0 &= ~LOCKLPM5;                        // Disable High Z mode
 
     while(1){
-        get_column();
+        get_key();
     }
 
 }
@@ -60,3 +62,68 @@ void get_column()   // Determine which column out of the four has the button bei
         col = 0;  // No key pressed
     }
 }
+
+void get_key()
+{
+    P1OUT &= ~(BIT5 | BIT6 | BIT7);  // Clear outputs to start, except BIT4
+    P1OUT |= BIT4; // Activate first row
+    get_column();
+
+    if (col == 1) {
+        key = 0x1;
+    } else if (col == 2) {
+        key = 0x2;
+    } else if (col == 3) {
+        key = 0x3;
+    } else if (col == 4) {
+        key = 0xa;
+    }
+
+    P1OUT &= ~BIT4;
+
+    P1OUT |= BIT5; // Activate second row
+    get_column();
+
+    if (col == 1) {
+        key = 0x4;
+    } else if (col == 2) {
+        key = 0x5;
+    } else if (col == 3) {
+        key = 0x6;
+    } else if (col == 4) {
+        key = 0xb;
+    }
+
+    P1OUT &= ~BIT5;
+
+    P1OUT |= BIT6; // Activate third row
+    get_column();
+
+    if (col == 1) {
+        key = 0x7;
+    } else if (col == 2) {
+        key = 0x8;
+    } else if (col == 3) {
+        key = 0x9;
+    } else if (col == 4) {
+        key = 0xc;
+    }
+
+    P1OUT &= ~BIT6;
+
+    P1OUT |= BIT7; // Activate fourth row
+    get_column();
+
+    if (col == 1) {
+        key = 0xe;
+    } else if (col == 2) {
+        key = 0x0;
+    } else if (col == 3) {
+        key = 0xf;
+    } else if (col == 4) {
+        key = 0xd;
+    }
+
+    P1OUT &= ~BIT7;
+}
+
